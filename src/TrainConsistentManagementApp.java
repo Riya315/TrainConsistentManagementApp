@@ -6,30 +6,33 @@ public class TrainConsistentManagementApp {
         // Welcome message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create a HashSet to store unique bogie IDs
-        Set<String> bogieIds = new HashSet<>();
+        // Create LinkedList for train consist
+        LinkedList<String> train = new LinkedList<>();
 
-        // Add bogie IDs
-        bogieIds.add("BG101");
-        bogieIds.add("BG102");
-        bogieIds.add("BG103");
+        // Add bogies
+        train.add("Engine");
+        train.add("Sleeper");
+        train.add("AC");
+        train.add("Cargo");
+        train.add("Guard");
 
-        // Attempt to add duplicate ID
-        boolean isAdded = bogieIds.add("BG101"); // duplicate
+        // Display initial train
+        System.out.println("\nInitial Train Consist:");
+        System.out.println(train);
 
-        // Display all bogie IDs
-        System.out.println("\nBogie IDs in the train:");
-        System.out.println(bogieIds);
+        // Insert Pantry Car at position 2 (index 2)
+        train.add(2, "Pantry Car");
 
-        // Check if duplicate was added
-        System.out.println("\nWas duplicate BG101 added? " + isAdded);
+        System.out.println("\nAfter adding Pantry Car at position 2:");
+        System.out.println(train);
 
-        // Check existence of a bogie ID
-        boolean exists = bogieIds.contains("BG102");
-        System.out.println("\nDoes BG102 exist? " + exists);
+        // Remove first and last bogie
+        train.removeFirst();
+        train.removeLast();
 
-        // Final count
-        System.out.println("\nTotal unique bogies: " + bogieIds.size());
+        // Final train consist
+        System.out.println("\nFinal Train Consist:");
+        System.out.println(train);
 
     }
 }
