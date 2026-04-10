@@ -1,57 +1,23 @@
-// Custom Runtime Exception
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
+class PassengerBogie {
+    private String type;
+    private int capacity;
 
-// Abstract Goods Bogie
-abstract class GoodsBogie {
-    protected String shape;
-    protected String cargo;
-
-    public GoodsBogie(String shape) {
-        this.shape = shape;
+    public PassengerBogie(String type, int capacity) {
+        this.type = type;
+        this.capacity = capacity;
     }
 
-    public void assignCargo(String cargo) {
-        try {
-            validateCargo(cargo);
-            this.cargo = cargo;
-            System.out.println("✅ Cargo '" + cargo + "' successfully assigned to " + shape + " bogie.");
-        } catch (CargoSafetyException e) {
-            System.out.println("❌ Error: " + e.getMessage());
-        } finally {
-            System.out.println("ℹ️ Validation completed for " + shape + " bogie.\n");
-        }
+    public int getCapacity() {
+        return capacity;
     }
 
-    protected abstract void validateCargo(String cargo);
-}
-
-// Rectangular Bogie
-class RectangularBogie extends GoodsBogie {
-    public RectangularBogie() {
-        super("Rectangular");
+    public String getType() {
+        return type;
     }
 
     @Override
-    protected void validateCargo(String cargo) {
-        if (cargo.equalsIgnoreCase("Petroleum")) {
-            throw new CargoSafetyException("Petroleum cannot be assigned to a Rectangular bogie (unsafe combination).");
-        }
-    }
-}
-
-// Cylindrical Bogie
-class CylindricalBogie extends GoodsBogie {
-    public CylindricalBogie() {
-        super("Cylindrical");
-    }
-
-    @Override
-    protected void validateCargo(String cargo) {
-        // Cylindrical bogies can safely carry petroleum
+    public String toString() {
+        return type + " (Capacity: " + capacity + ")";
     }
 }
 
@@ -59,16 +25,43 @@ public class TrainConsistentManagementApp {
 
     public static void main(String[] args) {
 
-            GoodsBogie rectBogie = new RectangularBogie();
-            GoodsBogie cylBogie = new CylindricalBogie();
+        // Example passenger bogie capacities
+        PassengerBogie[] bogies = {
+                new PassengerBogie("Sleeper", 72),
+                new PassengerBogie("AC Chair", 56),
+                new PassengerBogie("First Class", 24),
+                new PassengerBogie("Sleeper", 70),
+                new PassengerBogie("AC Chair", 60)
+        };
 
-            // Test Case 1: Safe Assignment
-            cylBogie.assignCargo("Petroleum");
+        System.out.println(" Before Sorting:");
+        displayBogies(bogies);
 
-            // Test Case 2: Unsafe Assignment
-            rectBogie.assignCargo("Petroleum");
+        bubbleSort(bogies);
 
-            // Test Case 3: Program continues after exception
-            rectBogie.assignCargo("Coal");
+        System.out.println("\n After Sorting (Ascending by Capacity):");
+        displayBogies(bogies);
+    }
+
+    // Bubble Sort Algorithm
+    public static void bubbleSort(PassengerBogie[] bogies) {
+        int n = bogies.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (bogies[j].getCapacity() > bogies[j + 1].getCapacity()) {
+                    // Swap
+                    PassengerBogie temp = bogies[j];
+                    bogies[j] = bogies[j + 1];
+                    bogies[j + 1] = temp;
+                }
+            }
         }
     }
+
+    // Display Bogies
+    public static void displayBogies(PassengerBogie[] bogies) {
+        for (PassengerBogie bogie : bogies) {
+            System.out.println(bogie);
+        }
+    }
+}
