@@ -2,9 +2,14 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class TrainConsistentManagementApp {
-    // Binary Search Method
-    public static boolean binarySearch(String[] bogieIds, String searchKey) {
-        // Ensure the array is sorted before searching
+    // Defensive Binary Search Method with validation
+    public static boolean binarySearchWithValidation(String[] bogieIds, String searchKey) {
+        // Validate state before searching
+        if (bogieIds == null || bogieIds.length == 0) {
+            throw new IllegalStateException(" Cannot perform search: No bogies available in the train consist.");
+        }
+
+        // Ensure array is sorted before binary search
         Arrays.sort(bogieIds);
 
         int low = 0;
@@ -26,23 +31,28 @@ public class TrainConsistentManagementApp {
     }
 
     public static void main(String[] args) {
-        // Example bogie IDs (unsorted to demonstrate sorting before search)
-        String[] bogieIds = {"BG309","BG101","BG550","BG205","BG412"};
+        // Example bogie IDs
+        String[] bogieIds = {"BG101","BG205","BG309","BG412","BG550"};
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter Bogie ID to search: ");
         String searchKey = scanner.nextLine();
 
-        boolean found = binarySearch(bogieIds, searchKey);
+        try {
+            boolean found = binarySearchWithValidation(bogieIds, searchKey);
 
-        if (found) {
-            System.out.println("✅ Bogie ID " + searchKey + " found in the consist.");
-        } else {
-            System.out.println("❌ Bogie ID " + searchKey + " not found in the consist.");
+            if (found) {
+                System.out.println(" Bogie ID " + searchKey + " found in the consist.");
+            } else {
+                System.out.println(" Bogie ID " + searchKey + " not found in the consist.");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
         }
 
         scanner.close();
     }
 }
+
 
 
